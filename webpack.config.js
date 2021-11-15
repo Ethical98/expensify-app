@@ -1,18 +1,21 @@
 // entry->output
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = (env) => {
   const isProduction = env.production === true;
+  const CSSExtract = new MiniCssExtractPlugin({ filename: 'styles.css' });
 
   return {
     entry: './src/app.js',
-    devtool: isProduction ? 'source-map' : 'eval-cheap-module-source-map',
+    devtool: isProduction ? 'source-map' : 'inline-source-map',
     mode: isProduction ? 'production' : 'development',
 
     output: {
       path: path.join(__dirname, 'public'),
       filename: 'bundle.js',
     },
+    plugins: [CSSExtract],
     module: {
       rules: [
         {
@@ -22,10 +25,25 @@ module.exports = (env) => {
         },
         {
           test: /\.s?css$/,
-          use: ['style-loader', 'css-loader', 'sass-loader'],
+          use: [
+            MiniCssExtractPlugin.loader,
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+              },
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+              },
+            },
+          ],
         },
       ],
     },
+
     devServer: {
       static: {
         directory: path.join(__dirname, 'public'),
