@@ -12,8 +12,9 @@ module.exports = (env) => {
     mode: isProduction ? 'production' : 'development',
 
     output: {
-      path: path.join(__dirname, 'public'),
+      path: path.join(__dirname, 'public', 'dist'),
       filename: 'bundle.js',
+      publicPath: '/dist/',
     },
     plugins: [CSSExtract],
     module: {
