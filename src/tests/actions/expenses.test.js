@@ -4,6 +4,7 @@ import {
   removeExpense,
   setExpenses,
   startAddExpense,
+  startRemoveExpense,
   startSetExpenses,
 } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
@@ -22,7 +23,24 @@ beforeEach((done) => {
 
   set(ref(database, 'expenses'), expensesData).then(() => done());
 });
-
+test('should remove expense from firebase', (done) => {
+  const store = createMockStore();
+  const id = expenses[2].id;
+  store
+    .dispatch(startRemoveExpense({ id }))
+    .then(() => {
+      const actions = store.getActions();
+      expect(actions[0]).toEqual({
+        type: 'REMOVE_EXPENSE',
+        id,
+      });
+      return get(child(ref(database), `expenses/${id}`));
+    })
+    .then((snapshot) => {
+      expect(snapshot.val()).toBeFalsy();
+      done();
+    });
+});
 test('should setup remove expense action object', () => {
   const action = removeExpense({ id: '123abc' });
   expect(action).toEqual({

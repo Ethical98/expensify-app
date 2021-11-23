@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import database from '../firebase/firebase';
-import { push, ref, get, child } from '@firebase/database';
+import { push, ref, get, child, remove } from '@firebase/database';
 //Add Expense
 export const addExpense = (expense) => ({
   type: 'ADD_EXPENSE',
@@ -28,6 +28,13 @@ export const removeExpense = ({ id } = {}) => ({
   type: 'REMOVE_EXPENSE',
   id,
 });
+
+export const startRemoveExpense =
+  ({ id } = {}) =>
+  (dispatch) =>
+    remove(ref(database, `expenses/${id}`)).then(() => {
+      dispatch(removeExpense({ id }));
+    });
 
 //Edit Expense
 export const editExpense = (id, updates) => ({
