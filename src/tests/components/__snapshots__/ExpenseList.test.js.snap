@@ -5,9 +5,6 @@ exports[`should render ExpenseList with empty message 1`] = `
   <h1>
     Expense List
   </h1>
-  <p>
-    No Expenses
-  </p>
 </div>
 `;
 
