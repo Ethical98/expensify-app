@@ -11,7 +11,7 @@ import {
 
 export class ExpenseListFilters extends React.Component {
   state = {
-    calendarFocused: 'null',
+    calendarFocused: null,
   };
 
   onDatesChange = ({ startDate, endDate }) => {
@@ -20,7 +20,9 @@ export class ExpenseListFilters extends React.Component {
   };
 
   onFocusChange = (calendarFocused) => {
-    this.setState(() => ({ calendarFocused }));
+    this.setState(() => ({
+      calendarFocused,
+    }));
   };
 
   ontextChange = (e) => {
