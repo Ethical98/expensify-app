@@ -14,6 +14,7 @@ import {
   onChildChanged,
   onChildAdded,
 } from 'firebase/database';
+import { GoogleAuthProvider, getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_API_KEY,
@@ -26,7 +27,9 @@ const firebaseConfig = {
 };
 
 const app = firebase.initializeApp(firebaseConfig);
+const auth = getAuth();
 const database = getDatabase(app);
+const googleAuthProvider = new GoogleAuthProvider();
 
 // set(ref(database), {
 //   name: 'Devansh',
@@ -170,4 +173,4 @@ const database = getDatabase(app);
 //   body: 'React5 native ,Python ,Angular',
 // });
 
-export { firebase, database as default };
+export { firebase, googleAuthProvider, auth, database as default };
