@@ -64,7 +64,7 @@ export const startSetExpenses = () => (dispatch) =>
             { id: childSnapshot.key, ...childSnapshot.val() },
           ];
         });
-        console.log(expenses);
+   
         dispatch(setExpenses(expenses));
       } else {
         console.log('No data available');
