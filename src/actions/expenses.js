@@ -8,7 +8,8 @@ export const addExpense = (expense) => ({
 });
 
 export const startAddExpense = (expenseData = {}) => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const uid = getState().auth.uid;
     const {
       description = '',
       note = '',
@@ -16,7 +17,7 @@ export const startAddExpense = (expenseData = {}) => {
       createdAt = 0,
     } = expenseData;
     const expense = { description, note, amount, createdAt };
-    return push(ref(database, 'expenses'), expense).then((ref) => {
+    return push(ref(database, `users/${uid}/expenses`), expense).then((ref) => {
       dispatch(addExpense({ id: ref.key, ...expense }));
     });
   };
@@ -31,10 +32,12 @@ export const removeExpense = ({ id } = {}) => ({
 
 export const startRemoveExpense =
   ({ id } = {}) =>
-  (dispatch) =>
-    remove(ref(database, `expenses/${id}`)).then(() => {
+  (dispatch, getState) => {
+    const uid = getState().auth.uid;
+    return remove(ref(database, `users/${uid}/expenses/${id}`)).then(() => {
       dispatch(removeExpense({ id }));
     });
+  };
 
 //Edit Expense
 export const editExpense = (id, updates) => ({
@@ -43,18 +46,23 @@ export const editExpense = (id, updates) => ({
   updates,
 });
 
-export const startEditExpense = (id, updates) => (dispatch) =>
-  update(ref(database, `expenses/${id}`), updates).then(() => {
-    dispatch(editExpense(id, updates));
-  });
+export const startEditExpense = (id, updates) => (dispatch, getState) => {
+  const uid = getState().auth.uid;
+  return update(ref(database, `users/${uid}/expenses/${id}`), updates).then(
+    () => {
+      dispatch(editExpense(id, updates));
+    }
+  );
+};
 
 export const setExpenses = (expenses) => ({
   type: 'SET_EXPENSES',
   expenses,
 });
 
-export const startSetExpenses = () => (dispatch) =>
-  get(child(ref(database), 'expenses'))
+export const startSetExpenses = () => (dispatch, getState) => {
+  const uid = getState().auth.uid;
+  return get(child(ref(database), `users/${uid}/expenses`))
     .then((snapshot) => {
       if (snapshot.exists()) {
         let expenses = [];
@@ -64,7 +72,7 @@ export const startSetExpenses = () => (dispatch) =>
             { id: childSnapshot.key, ...childSnapshot.val() },
           ];
         });
-   
+
         dispatch(setExpenses(expenses));
       } else {
         console.log('No data available');
@@ -73,7 +81,7 @@ export const startSetExpenses = () => (dispatch) =>
     .catch((error) => {
       console.error(error);
     });
-
+};
 // export const startSetExpenses = () => {
 //   return (dispatch) => {
 //     return get(child(ref(database), 'expenses')).then((snapshot) => {

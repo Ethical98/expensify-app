@@ -12,9 +12,7 @@ export const Header = ({ startLogout }) => (
     <NavLink to='/create' activeClassName='is-active'>
       Create Expense
     </NavLink>
-    <NavLink to='/help' activeClassName='is-active'>
-      Help
-    </NavLink>
+
     <button onClick={startLogout}>Log Out</button>
   </header>
 );
@@ -24,3 +22,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default connect(undefined, mapDispatchToProps)(Header);
+
+
