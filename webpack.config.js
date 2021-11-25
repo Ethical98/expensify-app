@@ -1,4 +1,5 @@
 // entry->output
+require('@babel/polyfill');
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -15,7 +16,7 @@ module.exports = (env) => {
   const CSSExtract = new MiniCssExtractPlugin({ filename: 'styles.css' });
 
   return {
-    entry: ['babel-polyfill', './src/app.js'],
+    entry: ['@babel/polyfill', './src/app.js'],
     devtool: isProduction ? 'source-map' : 'inline-source-map',
     mode: isProduction ? 'production' : 'development',
 
