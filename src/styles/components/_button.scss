@@ -1,0 +1,24 @@
+.button {
+  padding: $s-size;
+  background: $blue;
+  border: none;
+  display: inline-block;
+  border-radius: $border-radius-small;
+  color: white;
+  font-weight: 300;
+  font-size: $font-size-large;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.button--link {
+  background: none;
+}
+
+.fa-google {
+  margin: 0 $s-size 0 0;
+}
+
+.button--secondary {
+  background: #888;
+}
